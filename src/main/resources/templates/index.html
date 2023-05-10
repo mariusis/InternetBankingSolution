@@ -10,45 +10,50 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Brand Name</a>
+        <a class="navbar-brand" href="#">Demo Bank</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Button 1</a>
+                    <a class="nav-link" href="#">About us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Button 2</a>
+                    <a class="nav-link" href="#">Our offers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Button 3</a>
+                    <a class="nav-link" href="#">Contact</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
-                <sec:authorize access="isAuthenticated()">
-                    <li class="nav-item">
-                        <span class="nav-link">Welcome, [[${#httpServletRequest.remoteUser}]]</span>
-                    </li>
-                    <li class="nav-item">
-                        <form th:action="@{/logout}" method="post">
-                            <input class="btn btn-link nav-link" type="submit" value="Logout">
-                        </form>
-                    </li>
-                </sec:authorize>
+
+                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <span class="nav-link" th:text="'Hello, ' + ${#httpServletRequest.remoteUser}"></span>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <form th:action="@{/logout}" method="post">
+                        <input class="btn btn-link nav-link" type="submit" value="Logout">
+                    </form>
+                </li>
+                <li class="nav-item" th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link" href="/" th:href="@{/login}">Log In</a>
+                </li>
+                <li class="nav-item" th:unless="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link" href="/" th:href="@{/registration}" >Sign Up</a>
+                </li>
 
             </ul>
         </div>
-    </div>
+</div>
 </nav>
 <br>
 <br>
 <div class="container">
-    <h1>Registration completed</h1>
+    <h1></h1>
     
 
 </div>

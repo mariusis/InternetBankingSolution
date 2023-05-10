@@ -13,6 +13,6 @@ public interface AccountRepository extends CrudRepository<Account,Long> {
 
     Account findByOwnerId(Long ownerId);
     Account findByAccountTypeAndOwnerId(String accountType, Long ownerId);
-
+    List<Account> findAllByOwnerId(Long ownerId);
 
 }

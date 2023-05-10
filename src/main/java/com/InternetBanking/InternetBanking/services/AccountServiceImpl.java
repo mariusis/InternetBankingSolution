@@ -8,6 +8,8 @@ import com.InternetBanking.InternetBanking.web.dto.AccountDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -32,5 +34,9 @@ public class AccountServiceImpl implements AccountService {
 
         accountRepository.save(acc); // save the account and update the id
         return acc;
+    }
+    @Override
+    public List<Account> findAccountsByOwnerId(Long ownerId) {
+        return accountRepository.findAllByOwnerId(ownerId);
     }
 }
