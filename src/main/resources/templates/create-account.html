@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+  <title>Create Account</title>
+</head>
+<body>
+<span th:text="${#authentication.principal.username}"></span>
+<h2>Create Account</h2>
+<form method="post" th:action="@{/create-account}" th:object="${account}">
+  <div>
+    <label for="accountType">Account Type:</label>
+    <input type="text" id="accountType" th:field="*{accountType}" name="accountType" />
+  </div>
+  <input type="submit" value="Create" />
+</form>
+</body>
+</html>
