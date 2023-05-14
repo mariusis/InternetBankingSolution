@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface AccountService {
     Account save(AccountDto account);
-    public List<Account> findAccountsByOwnerId(Long ownerId);
+    public List<Account> findAccountsOfCurrentUser(String email);
+
 }

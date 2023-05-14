@@ -10,6 +10,15 @@ import lombok.Setter;
 public class AccountDto {
     private String accountType;
     private String email;
+    private String accountName;
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
 
     public String getAccountType() {
         return accountType;

@@ -27,7 +27,13 @@ public class AccountController {
         this.accountService = accountService;
         this.userRepository = userRepository;
     }
-
+    @GetMapping("/accounts")
+    public String showAccounts(Model model, @AuthenticationPrincipal User currentUser) {
+        com.InternetBanking.InternetBanking.domain.User user = userRepository.findByEmail(currentUser.getUsername());
+        List<Account> accounts = accountService.findAccountsOfCurrentUser(currentUser.getUsername());
+        model.addAttribute("accounts", accounts);
+        return "accounts";
+    }
 
     @GetMapping("/accounts/create-account")
     public String showAccountCreationForm(Model model){
@@ -35,35 +41,15 @@ public class AccountController {
         return "create-account";
     }
 
-    @PostMapping
+    @PostMapping("/create-account")
     public String createBankingAccount(@ModelAttribute("account") AccountDto accountDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        System.out.println(email);
         accountDto.setEmail(email);
         accountService.save(accountDto);
-
         return "redirect:/accounts";
     }
-    @GetMapping("/accounts")
-    public String showAccounts(Model model, @AuthenticationPrincipal User currentUser) {
-        com.InternetBanking.InternetBanking.domain.User user = userRepository.findByEmail(currentUser.getUsername());
-        List<Account> accounts = accountService.findAccountsByOwnerId(user.getUserId());
-        model.addAttribute("accounts", accounts);
-        return "accounts";
-    }
-    @GetMapping("/transaction")
-    public String showTransaction(Model model, @AuthenticationPrincipal User currentUser) {
 
-        return "transaction";
-    }
-    @GetMapping("/transaction-history")
-    public String showTransactionHistory(Model model, @AuthenticationPrincipal User currentUser) {
-        com.InternetBanking.InternetBanking.domain.User user = userRepository.findByEmail(currentUser.getUsername());
-        List<Account> accounts = accountService.findAccountsByOwnerId(user.getUserId());
-        model.addAttribute("accounts", accounts);
-        return "transaction-history";
-    }
 
 
 }

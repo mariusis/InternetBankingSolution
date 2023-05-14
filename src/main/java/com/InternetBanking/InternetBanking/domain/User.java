@@ -49,5 +49,9 @@ public class User {
         this.roles = roles;
     }
 
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
+    }
+
 
 }

@@ -11,16 +11,32 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
     @Autowired
-    private SecurityServiceImpl securityServiceImpl;
+    private final SecurityServiceImpl securityServiceImpl;
+    @Autowired
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    public SecurityConfig(UserService userService, SecurityServiceImpl securityServiceImpl, CustomAccessDeniedHandler customAccessDeniedHandler) {
+        this.userService = userService;
+        this.securityServiceImpl = securityServiceImpl;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -42,6 +58,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request,
+                                                        HttpServletResponse response,
+                                                        Authentication authentication)
+                            throws IOException, ServletException {
+                        response.sendRedirect("/accounts");
+                    }
+                })
                 .permitAll()
                 .and()
                 .logout()
@@ -49,7 +74,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/")
-                .permitAll();
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler);
     }
 
     @Bean
