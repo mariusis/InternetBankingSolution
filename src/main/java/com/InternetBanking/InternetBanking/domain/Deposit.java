@@ -34,14 +34,15 @@ public class Deposit {
 
     @NotNull
     private Double amount;
-
+    private String currency;
     @NotNull
     private LocalDateTime date;
 
-    public Deposit(String accountNumber,String accountName , Double amount) {
+    public Deposit(String accountNumber,String accountName , Double amount,String currency) {
         this.accountNumber = accountNumber;
         this.accountName = accountName;
         this.amount = amount;
+        this.currency = currency;
         this.date = LocalDateTime.now();
     }
 }

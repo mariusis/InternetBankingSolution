@@ -13,6 +13,7 @@ public class TransferDTO {
     private String senderAccountNumber;
     private String recipientAccountNumber;
     private Double amount;
+    private String description;
 
     // getters and setters
 }

@@ -15,6 +15,8 @@ public class TransactionInfo {
     private String accountNumber;
     private Double amount;
     private String transactionType;
+    private String currency;
+    private String description;
 
 
 }

@@ -61,6 +61,9 @@
             background-color: #0069d9;
             border-color: #0062cc;
         }
+        #deposit-button{
+        background-color:green;
+        }
 </style>
 </head>
 <body>
@@ -125,10 +128,13 @@
         <td th:text="${account.accountName}"></td>
         <td th:text="${account.accountNumber}"></td>
         <td th:text="${account.accountType}"></td>
-        <td th:text="${account.balance}"></td>
+        <td th:text="${account.balance} + ${account.currency}"></td>
     </tr>
     </tbody>
 </table>
-<a href="/accounts/create-account" class="btn btn-primary mt-3">Add Account</a>
+<div><a href="/accounts/create-account" class="btn btn-primary mt-3">Add Account</a></div>
+<div>
+    <a href="/deposit" id="deposit-button" class="btn btn-primary mt-3">Deposit</a>
+</div>
 </body>
 </html>

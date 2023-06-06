@@ -35,8 +35,7 @@ public class AccountServiceImpl implements AccountService {
             // handle the case where the user doesn't exist
             return null;
         }
-
-        Account acc = new Account(accountDto.getAccountType(), user.getUserId(),accountDto.getAccountName());
+        Account acc = new Account(accountDto.getAccountType(), user.getUserId(),accountDto.getAccountName(),accountDto.getCurrency());
 
         accountRepository.save(acc); // save the account and update the id
         return acc;

@@ -48,6 +48,8 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService 
             transactionInfo.setAccountName(deposit.getAccountName());
             transactionInfo.setAmount(deposit.getAmount());
             transactionInfo.setTransactionType("DEPOSIT");
+            transactionInfo.setDescription("ATM deposit from <location> ");
+            transactionInfo.setCurrency(deposit.getCurrency());
             transactionInfoList.add(transactionInfo);
         }
         
@@ -61,6 +63,7 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService 
             transferInfo.setAmount(transfer.getAmount());
             transferInfo.setTransactionType("TRANSFER");
             transactionInfoList.add(transferInfo);
+            transferInfo.setDescription(transfer.getDescription());
         }
         Collections.sort(transactionInfoList, Comparator.comparing(TransactionInfo::getDateTime));
         

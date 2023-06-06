@@ -26,14 +26,14 @@ public class TransferServiceImpl implements TransferService {
     }
 
     @Transactional
-    public void transferFunds(String senderAccountNumber, String recipientAccountNumber, Double amount) {
+    public void transferFunds(String senderAccountNumber, String recipientAccountNumber, Double amount,String description) {
         String senderUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Account senderAccount = accountRepository.findByAccountNumber(senderAccountNumber);
         Account recipientAccount = accountRepository.findByAccountNumber(recipientAccountNumber);
 
         senderAccount.transfer(recipientAccount, amount);
-        Transfer transfer = new Transfer(senderAccount, recipientAccount, amount,userRepository.findByUserId(senderAccount.getOwnerId()).getFullName(),userRepository.findByUserId(recipientAccount.getOwnerId()).getFullName());
+        Transfer transfer = new Transfer(senderAccount, recipientAccount, amount,userRepository.findByUserId(senderAccount.getOwnerId()).getFullName(),userRepository.findByUserId(recipientAccount.getOwnerId()).getFullName(),description);
         accountRepository.save(senderAccount);
         accountRepository.save(recipientAccount);
         transferRepository.save(transfer);

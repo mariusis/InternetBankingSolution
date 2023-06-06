@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountNotFoundException;
+import javax.transaction.Transactional;
 
 @Service
 public class DepositServiceImpl implements DepositService{
@@ -23,7 +24,7 @@ public class DepositServiceImpl implements DepositService{
 
         this.depositRepository = depositRepository;
     }
-
+    @Transactional
     public void deposit(String accountNumber, Double amount) throws AccountNotFoundException {
         Account account = accountRepository.findByAccountNumber(accountNumber);
         if (account == null) {
@@ -33,7 +34,7 @@ public class DepositServiceImpl implements DepositService{
         account.deposit(amount);
         accountRepository.save(account);
 
-        Deposit deposit = new Deposit(account.getAccountNumber(),account.getAccountName(),amount);
+        Deposit deposit = new Deposit(account.getAccountNumber(),account.getAccountName(),amount, account.getCurrency());
 
         depositRepository.save(deposit);
     }

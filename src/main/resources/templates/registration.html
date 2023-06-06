@@ -113,6 +113,7 @@
             font-weight: bold;
             text-transform: uppercase;
         }
+
     </style>
 
 </head>
@@ -174,6 +175,10 @@
                 <div class ="alert alert-info">You've succesfully registered
                 </div>
             </div>
+            <div th:if="${param.failed}">
+                <div class ="alert alert-info alert-danger">Email adress already in use
+                </div>
+            </div>
             <h1>Registration</h1>
             <form th:action="@{/registration}" method="post" th:object="${user}" onsubmit="return validateForm()">
                 <div class="form-group">
@@ -199,6 +204,10 @@
                     <input id="password" class="form-control" type="password"
                            th:field="*{password}" required autofocus="autofocus" />
                 </div>
+                <div class="form-group">
+                    <label class="control-label" for="confirmPassword">Confirm Password</label>
+                    <input id="confirmPassword" class="form-control" type="password" required autofocus="autofocus" />
+                </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Register</button>
@@ -218,15 +227,23 @@
     function validateForm() {
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirmPassword").value;
 
         if (!/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum|co))$/.test(email)) {
-    alert("Please enter a valid email address.");
-    return false;
-}
+            alert("Please enter a valid email address.");
+            return false;
+        }
 
         if (password.length < 6) {
             alert("Password must be at least 6 characters long");
             return false;
         }
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return false;
+        }
+
+        return true;
     }
 </script>

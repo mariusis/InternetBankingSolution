@@ -29,6 +29,9 @@ public class UserRegistrationController {
 
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) throws MessagingException {
+        if(userService.save(registrationDto) == null){
+            return "redirect:/registration?failed";
+        }
         userService.save(registrationDto);
         return "redirect:/registration?success";
     }

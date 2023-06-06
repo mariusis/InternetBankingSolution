@@ -42,7 +42,7 @@ public class TransactionController {
     @PostMapping
     public String transferFunds(@ModelAttribute("transaction") TransferDTO transferDTO, Model model) {
         try {
-            transferService.transferFunds(transferDTO.getSenderAccountNumber(), transferDTO.getRecipientAccountNumber(), transferDTO.getAmount());
+            transferService.transferFunds(transferDTO.getSenderAccountNumber(), transferDTO.getRecipientAccountNumber(), transferDTO.getAmount(),transferDTO.getDescription());
             model.addAttribute("success",true);
             return "redirect:/transaction?success";
         } catch (IllegalArgumentException e) {

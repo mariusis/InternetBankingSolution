@@ -20,8 +20,8 @@ public class Account {
     private static final String ACCOUNT_TYPE_RO = "RO40";
     @Column(name = "account_number", unique = true)
     String accountNumber;
-
     private String accountType;
+    private String currency;
     private Double balance = 0.00;
 
 
@@ -33,7 +33,7 @@ public class Account {
         this.accountNumber = prefix + baseNumber;
     }
 
-    public Account(String accountType, Long ownerId,String accountName) {
+    public Account(String accountType, Long ownerId,String accountName,String currency) {
 
         this.accountType = accountType;
         this.ownerId = ownerId;
@@ -41,7 +41,7 @@ public class Account {
         String baseNumber = UUID.randomUUID().toString().replaceAll("[^0-9]", "").substring(0, 12);
         String prefix = ACCOUNT_TYPE_RO; // Change this depending on the account type
         this.accountNumber = prefix + baseNumber;
-
+        this.currency= currency;
     }
     private void send(Double amount){
         this.balance = this.balance - amount;
@@ -53,6 +53,10 @@ public class Account {
         this.balance = this.balance + amount;
     }
     public void transfer(Account recipient, Double amount) {
+       if(this.currency != recipient.getCurrency()){
+           throw new IllegalArgumentException("Wrong currency");
+       }
+
         if (this.balance.compareTo(amount) < 0) {
             throw new IllegalArgumentException("Insufficient funds");
         }

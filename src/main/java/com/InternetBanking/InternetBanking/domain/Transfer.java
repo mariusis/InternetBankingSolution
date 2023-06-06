@@ -32,13 +32,15 @@ public class Transfer {
 
     private String senderName;
     private String receiverName;
+    private String description;
 
-    public Transfer(Account sender, Account receiver, Double amount,String senderName,String receiverName) {
+    public Transfer(Account sender, Account receiver, Double amount,String senderName,String receiverName,String description) {
         this.sender = sender;
         this.receiver = receiver;
         this.amount = amount;
         this.date = LocalDateTime.now();
         this.senderName = senderName;
         this.receiverName = receiverName;
+        this.description = description;
     }
 }

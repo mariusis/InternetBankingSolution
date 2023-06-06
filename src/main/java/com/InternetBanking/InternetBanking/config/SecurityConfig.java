@@ -49,11 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/registration**", "/js/**", "/css/**", "/img/**").permitAll()
+                .antMatchers("/registration**", "/js/**", "/css/**", "/img/**","/about","/offers","/contact").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/accounts/**").access("hasRole('USER') and @securityServiceImpl.isVerifiedUser()")
+                .antMatchers("/accounts/**","/deposit/**","/transaction/**","/transaction-history/**").access("hasRole('USER') and @securityServiceImpl.isVerifiedUser()")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

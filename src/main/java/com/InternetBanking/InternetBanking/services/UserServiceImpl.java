@@ -4,7 +4,6 @@ import com.InternetBanking.InternetBanking.domain.Role;
 import com.InternetBanking.InternetBanking.domain.User;
 import com.InternetBanking.InternetBanking.repositories.UserRepository;
 import com.InternetBanking.InternetBanking.web.dto.UserRegistrationDto;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,9 +22,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final RegistrationVerifcationServiceImpl verification;
+    private final RegistrationVerificationServiceImpl verification;
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, RegistrationVerifcationServiceImpl verification) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, RegistrationVerificationServiceImpl verification) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.verification = verification;
@@ -33,6 +32,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(UserRegistrationDto registrationDto) throws MessagingException {
+
+        if(userRepository.findByEmail(registrationDto.getEmail()) != null){
+            return null;
+        }
         User user = new User(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getEmail(),
                 passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));

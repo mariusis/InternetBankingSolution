@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Unverified User</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-top: 50px;
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.5;
+      text-align: center;
+      margin-top: 30px;
+    }
+    .success-message {
+      font-size: 16px;
+      color: green;
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 50px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
 </head>
 <body>
 <h1>Please Verify Your Account</h1>
 <p>Your account has not been verified yet. Please check your email for a verification link and follow the instructions to verify your account. If you have already verified your account, please try logging in again.</p>
+<form method="POST" th:action="@{/unverified}">
+  <button type="submit">Resend Verification</button>
+</form>
+<div class="success-message" th:text="${successMessage}"></div>
 </body>
 </html>
