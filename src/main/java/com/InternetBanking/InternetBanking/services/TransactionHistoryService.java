@@ -8,4 +8,5 @@ import java.util.List;
 @Service
 public interface TransactionHistoryService {
     public List<TransactionInfo> findAllByUser(String username);
+
 }

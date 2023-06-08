@@ -19,11 +19,10 @@ public class Account {
     private String accountName;
     private static final String ACCOUNT_TYPE_RO = "RO40";
     @Column(name = "account_number", unique = true)
-    String accountNumber;
+    private String accountNumber;
     private String accountType;
     private String currency;
     private Double balance = 0.00;
-
 
     private Long ownerId;
     public Account() {

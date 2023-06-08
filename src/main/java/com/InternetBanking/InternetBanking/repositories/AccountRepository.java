@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface AccountRepository extends CrudRepository<Account,Long> {
 
     Account findByAccountId(Long accountId);
+
     Account findByAccountNumber(String accountNumber);
     Account findByAccountTypeAndOwnerId(String accountType, Long ownerId);
     List<Account> findAllByOwnerId(Long ownerId);
