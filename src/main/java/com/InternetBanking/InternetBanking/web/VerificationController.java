@@ -16,39 +16,45 @@ import javax.servlet.http.HttpServletRequest;
 public class VerificationController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository; // Repository for accessing user data
 
     @Autowired
-    private RegistrationVerificationServiceImpl registrationVerificationService;
+    private RegistrationVerificationServiceImpl registrationVerificationService; // Service for registration verification logic
 
+    // Handles the route for displaying the page when the user is unverified
     @GetMapping("/unverified")
     public String unverified(Model model) {
-        model.addAttribute("successMessage", "");
-        return "unverified";
+        model.addAttribute("successMessage", ""); // Initialize the success message
+        return "unverified"; // Render the 'unverified' HTML template
     }
 
+    // Handles the user's request to resend the verification email
     @PostMapping("/unverified")
-    public String resendVerification( Model model) throws MessagingException {
+    public String resendVerification(Model model) throws MessagingException {
+        // Call the service to resend the verification email
         registrationVerificationService.reSendVerificationEmail();
 
+        // Add a success message to the model
         model.addAttribute("successMessage", "Verification email has been sent successfully!");
-        return "unverified";
 
+        // Render the 'unverified' HTML template
+        return "unverified";
     }
 
+    // Handles the route for verifying the user's email
     @GetMapping("/verify")
     public String verifyEmail(@RequestParam("token") String verificationToken) {
-        // Find the user by verification token
+        // Find the user by verification token using the UserRepository
         User user = userRepository.findByVerificationToken(verificationToken);
 
         if (user == null) {
-            return "verification-failed";
+            return "verification-failed"; // If user not found, render the 'verification-failed' template
         }
 
         // Set the user's verified status to true
         user.setVerified(true);
         userRepository.save(user);
 
-        return "verification-successful";
+        return "verification-successful"; // Render the 'verification-successful' template
     }
 }

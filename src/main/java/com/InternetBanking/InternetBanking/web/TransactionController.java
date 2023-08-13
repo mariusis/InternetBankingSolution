@@ -21,35 +21,54 @@ import java.util.List;
 public class TransactionController {
 
     @Autowired
-    private final TransferService transferService;
+    private final TransferService transferService; // Service for transfer-related logic
     @Autowired
-    private final AccountService accountService;
+    private final AccountService accountService; // Service for account-related logic
 
+    // Constructor Dependency Injection (DI)
     public TransactionController(TransferService transferService, AccountService accountService) {
-        this.transferService = transferService;
-        this.accountService = accountService;
+        this.transferService = transferService; // Initializing TransferService via DI
+        this.accountService = accountService; // Initializing AccountService via DI
     }
 
-
+    // Handles the route for displaying the transfer form
     @GetMapping
-    public String showTransferForm(Model model,@AuthenticationPrincipal User currentUser) {
+    public String showTransferForm(Model model, @AuthenticationPrincipal User currentUser) {
+        // Fetch the list of accounts associated with the current user via AccountService
         List<Account> accounts = accountService.findAccountsOfCurrentUser(currentUser.getUsername());
+
+        // Add an empty TransferDTO to the model for rendering the transfer form
         model.addAttribute("transaction", new TransferDTO());
-        model.addAttribute("accounts",accounts);
+
+        // Add the list of accounts to the model for display in the view
+        model.addAttribute("accounts", accounts);
+
+        // Render the 'transactional' HTML template to display the transfer form
         return "transactional";
     }
 
+    // Handles the transfer submission
     @PostMapping
     public String transferFunds(@ModelAttribute("transaction") TransferDTO transferDTO, Model model) {
         try {
-            transferService.transferFunds(transferDTO.getSenderAccountNumber(), transferDTO.getRecipientAccountNumber(), transferDTO.getAmount(),transferDTO.getDescription());
-            model.addAttribute("success",true);
+            // Attempt to transfer funds using the TransferService
+            transferService.transferFunds(
+                    transferDTO.getSenderAccountNumber(),
+                    transferDTO.getRecipientAccountNumber(),
+                    transferDTO.getAmount(),
+                    transferDTO.getDescription());
+
+            // Inform the view that the transfer was successful
+            model.addAttribute("success", true);
+
+            // Redirect the user back to the transaction page with a success query parameter
             return "redirect:/transaction?success";
         } catch (IllegalArgumentException e) {
+            // If an exception occurs (e.g., insufficient funds), handle the error
             model.addAttribute("error", e.getMessage());
+
+            // Redirect the user back to the transaction page with an error query parameter
             return "redirect:/transaction?error=" + e.getMessage();
         }
     }
-
-
 }
