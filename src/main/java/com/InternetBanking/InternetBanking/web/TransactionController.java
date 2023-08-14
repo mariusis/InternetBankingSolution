@@ -44,7 +44,7 @@ public class TransactionController {
         model.addAttribute("accounts", accounts);
 
         // Render the 'transactional' HTML template to display the transfer form
-        return "transactional";
+        return "transaction";
     }
 
     // Handles the transfer submission
